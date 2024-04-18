@@ -1,0 +1,142 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Mfpurrs API",
+    "version": "1.0.0",
+    "description": "An API for accessing Mfpurrs metadata and their physical descriptions.",
+    "contact": {
+      "name": "Imp0ster",
+      "url": "https://github.com/the-imp0ster"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://mfpurrs-api.vercel.app/api",
+      "description": "Production server"
+    }
+  ],
+  "paths": {
+    "/purr/{number}": {
+      "get": {
+        "operationId": "getMfpurrMetadata",
+        "summary": "Get metadata for a specific mfpurr by its number.",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The unique number of the mfpurr."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved mfpurr metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Purr"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Purr number is required or must be a valid number."
+          },
+          "404": {
+            "description": "Mfpurr not found."
+          }
+        }
+      }
+    },
+    "/purr/description/{number}": {
+      "get": {
+        "operationId": "getMfpurrDescription",
+        "summary": "Get a description of a mfpurr's appearance based on its number.",
+        "parameters": [
+          {
+            "name": "number",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The unique number of the mfpurr requested."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved mfpurr description.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Purr number is required or must be a valid number."
+          },
+          "404": {
+            "description": "Mfpurr not found."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Purr": {
+        "type": "object",
+        "properties": {
+          "ethscription_id": {
+            "type": "string",
+            "example": "0x24c811172056556dbeac086decd4905d32f79724029e7c407b321ee3670f6efd"
+          },
+          "name": {
+            "type": "string",
+            "example": "mfpurr #1"
+          },
+          "description": {
+            "type": "string",
+            "example": "A unique Mfpurr with distinct traits."
+          },
+          "external_url": {
+            "type": "string",
+            "example": "https://example.com/external_url"
+          },
+          "background_color": {
+            "type": "string",
+            "example": "#FFFFFF"
+          },
+          "item_index": {
+            "type": "integer",
+            "example": 0
+          },
+          "item_attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MfpurrAttribute"
+            }
+          }
+        }
+      },
+      "MfpurrAttribute": {
+        "type": "object",
+        "properties": {
+          "trait_type": {
+            "type": "string",
+            "example": "fur"
+          },
+          "value": {
+            "type": "string",
+            "example": "siamese"
+          }
+        }
+      }
+    }
+  }
+}
